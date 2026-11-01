@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg126365.desktop;
 import it.unicam.cs.mpgc.rpg126365.applicazione.Gioco;
 import it.unicam.cs.mpgc.rpg126365.dominio.Archetipo;
 import it.unicam.cs.mpgc.rpg126365.dominio.Azione;
+import it.unicam.cs.mpgc.rpg126365.dominio.Campagna;
 import it.unicam.cs.mpgc.rpg126365.dominio.Eroe;
 import it.unicam.cs.mpgc.rpg126365.dominio.Fase;
 import it.unicam.cs.mpgc.rpg126365.dominio.Partita;
@@ -31,6 +32,7 @@ final class FinestraGioco {
     private final JPanel contenuto = new JPanel(schede);
     private final JTextField nome = new JTextField(18);
     private final JComboBox<Archetipo> archetipo = new JComboBox<>(Archetipo.values());
+    private final JComboBox<String> campagna;
     private final JLabel luogo = new JLabel();
     private final JLabel nomeEroe = new JLabel();
     private final JLabel nomeNemico = new JLabel();
@@ -47,6 +49,7 @@ final class FinestraGioco {
 
     FinestraGioco(Gioco gioco) {
         this.gioco = gioco;
+        campagna = new JComboBox<>(gioco.campagne().stream().map(Campagna::nome).toArray(String[]::new));
         nomeEroe.putClientProperty("html.disable", true);
         contenuto.add(menu(), "menu");
         contenuto.add(schermataPartita(), "partita");
@@ -64,6 +67,8 @@ final class FinestraGioco {
     private JPanel menu() {
         JPanel pannello = new JPanel(new GridLayout(0, 1, 0, 8));
         pannello.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        pannello.add(new JLabel("Campagna"));
+        pannello.add(campagna);
         pannello.add(new JLabel("Nome dell'eroe"));
         pannello.add(nome);
         pannello.add(new JLabel("Classe"));
@@ -99,7 +104,7 @@ final class FinestraGioco {
 
     private void inizia() {
         try {
-            partita = gioco.inizia(nome.getText(), (Archetipo) archetipo.getSelectedItem());
+            partita = gioco.inizia(gioco.campagne().get(campagna.getSelectedIndex()).id(), nome.getText(), (Archetipo) archetipo.getSelectedItem());
             visualizzaPartita();
         } catch (IllegalArgumentException errore) {
             avviso(errore.getMessage());
@@ -127,7 +132,7 @@ final class FinestraGioco {
     }
 
     private void turno(Azione azione) {
-        partita = gioco.gioca(partita, azione);
+        partita = gioco.gioca(partita, azione).partita();
         aggiorna();
     }
 
@@ -172,7 +177,7 @@ final class FinestraGioco {
         messaggio.setText(switch (fase) {
             case COMBATTIMENTO -> "Scegli la prossima azione.";
             case TRA_STANZE -> "Stanza liberata. Puoi salvare o avanzare.";
-            case VITTORIA -> "Vittoria! Hai sconfitto il Guardiano di Vesper.";
+            case VITTORIA -> "Vittoria! Hai completato la campagna.";
             case SCONFITTA -> "Sconfitta. Il tuo eroe è caduto.";
         });
         boolean combattimento = fase == Fase.COMBATTIMENTO;

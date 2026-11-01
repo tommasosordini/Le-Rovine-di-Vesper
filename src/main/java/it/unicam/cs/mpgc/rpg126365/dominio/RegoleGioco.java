@@ -1,18 +1,14 @@
 package it.unicam.cs.mpgc.rpg126365.dominio;
 
-import java.util.List;
 import java.util.Objects;
 
 public final class RegoleGioco {
     private static final int POZIONI_INIZIALI = 3;
     private static final int CURA_POZIONE = 14;
-    private final List<Stanza> stanze;
+    private final Campagna campagna;
 
-    public RegoleGioco(List<Stanza> stanze) {
-        this.stanze = List.copyOf(stanze);
-        if (this.stanze.isEmpty()) {
-            throw new IllegalArgumentException("La campagna deve avere almeno una stanza.");
-        }
+    public RegoleGioco(Campagna campagna) {
+        this.campagna = Objects.requireNonNull(campagna);
     }
 
     public Partita inizia(String nome, Archetipo archetipo) {
@@ -21,10 +17,10 @@ public final class RegoleGioco {
     }
 
     public Stanza stanza(Partita partita) {
-        if (partita.indiceStanza() >= stanze.size()) {
+        if (!campagna.id().equals(partita.idCampagna()) || partita.indiceStanza() >= campagna.stanze().size()) {
             throw new IllegalArgumentException("La stanza non appartiene alla campagna.");
         }
-        Stanza stanza = stanze.get(partita.indiceStanza());
+        Stanza stanza = campagna.stanze().get(partita.indiceStanza());
         if (partita.saluteNemico() > stanza.saluteNemico()) {
             throw new IllegalArgumentException("La salute del nemico supera il massimo della stanza.");
         }
@@ -39,7 +35,7 @@ public final class RegoleGioco {
         if (partita.saluteNemico() > 0) {
             return Fase.COMBATTIMENTO;
         }
-        return partita.indiceStanza() == stanze.size() - 1 ? Fase.VITTORIA : Fase.TRA_STANZE;
+        return partita.indiceStanza() == campagna.stanze().size() - 1 ? Fase.VITTORIA : Fase.TRA_STANZE;
     }
 
     public Partita avanza(Partita partita) {
@@ -49,7 +45,7 @@ public final class RegoleGioco {
         return entra(partita.eroe(), partita.indiceStanza() + 1);
     }
 
-    public Partita giocaTurno(Partita partita, Azione azione) {
+    public EsitoTurno giocaTurno(Partita partita, Azione azione) {
         if (fase(partita) != Fase.COMBATTIMENTO) {
             throw new IllegalStateException("Non c'è uno scontro in corso.");
         }
@@ -60,6 +56,7 @@ public final class RegoleGioco {
         int saluteNemico = partita.saluteNemico();
         boolean abilitaDisponibile = partita.abilitaDisponibile();
         int difesa = 0;
+        int saluteRecuperata = 0;
 
         switch (azione) {
             case ATTACCA -> saluteNemico = Math.max(0, saluteNemico - archetipo.attacco());
@@ -76,19 +73,23 @@ public final class RegoleGioco {
                     throw new IllegalStateException("Puoi bere una pozione solo se ne hai una e hai perso salute.");
                 }
                 salute = Math.min(archetipo.saluteMassima(), salute + CURA_POZIONE);
+                saluteRecuperata = salute - eroe.salute();
                 pozioni--;
             }
         }
 
-        if (saluteNemico > 0) {
-            int dannoRicevuto = Math.max(0, stanza(partita).attaccoNemico() - difesa);
-            salute = Math.max(0, salute - dannoRicevuto);
-        }
+        int danniRicevuti = saluteNemico == 0 ? 0
+                : Math.min(salute, Math.max(0, stanza(partita).attaccoNemico() - difesa));
+        salute -= danniRicevuti;
         Eroe aggiornato = new Eroe(eroe.nome(), archetipo, salute, pozioni);
-        return new Partita(aggiornato, partita.indiceStanza(), saluteNemico, abilitaDisponibile);
+        Partita aggiornata = new Partita(campagna.id(), aggiornato, partita.indiceStanza(),
+                saluteNemico, abilitaDisponibile);
+        return new EsitoTurno(aggiornata, azione, partita.saluteNemico() - saluteNemico,
+                danniRicevuti, saluteRecuperata);
     }
 
     private Partita entra(Eroe eroe, int indiceStanza) {
-        return new Partita(eroe, indiceStanza, stanze.get(indiceStanza).saluteNemico(), true);
+        return new Partita(campagna.id(), eroe, indiceStanza,
+                campagna.stanze().get(indiceStanza).saluteNemico(), true);
     }
 }

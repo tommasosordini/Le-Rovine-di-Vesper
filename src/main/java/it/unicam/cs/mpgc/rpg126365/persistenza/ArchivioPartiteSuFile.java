@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 public final class ArchivioPartiteSuFile implements ArchivioPartite {
-    private static final String VERSIONE = "1";
+    private static final String VERSIONE = "2";
     private final Path file;
 
     public ArchivioPartiteSuFile(Path file) {
@@ -26,6 +26,7 @@ public final class ArchivioPartiteSuFile implements ArchivioPartite {
         Eroe eroe = partita.eroe();
         Properties dati = new Properties();
         dati.setProperty("versione", VERSIONE);
+        dati.setProperty("campagna", partita.idCampagna());
         dati.setProperty("nome", eroe.nome());
         dati.setProperty("archetipo", eroe.archetipo().name());
         dati.setProperty("salute", Integer.toString(eroe.salute()));
@@ -51,16 +52,19 @@ public final class ArchivioPartiteSuFile implements ArchivioPartite {
         Properties dati = new Properties();
         try (var reader = Files.newBufferedReader(file)) {
             dati.load(reader);
-            if (!VERSIONE.equals(dati.getProperty("versione"))) {
-                throw new IOException("Versione del salvataggio non supportata.");
-            }
+            String versione = campo(dati, "versione");
+            String idCampagna = switch (versione) {
+                case "1" -> "vesper";
+                case VERSIONE -> campo(dati, "campagna");
+                default -> throw new IOException("Versione del salvataggio non supportata.");
+            };
             Eroe eroe = new Eroe(campo(dati, "nome"), Archetipo.valueOf(campo(dati, "archetipo")),
                     intero(dati, "salute"), intero(dati, "pozioni"));
             String abilita = campo(dati, "abilitaDisponibile");
             if (!"true".equals(abilita) && !"false".equals(abilita)) {
                 throw new IllegalArgumentException("Valore dell'abilità non valido.");
             }
-            return Optional.of(new Partita(eroe, intero(dati, "stanza"),
+            return Optional.of(new Partita(idCampagna, eroe, intero(dati, "stanza"),
                     intero(dati, "saluteNemico"), Boolean.parseBoolean(abilita)));
         } catch (NoSuchFileException assente) {
             return Optional.empty();
