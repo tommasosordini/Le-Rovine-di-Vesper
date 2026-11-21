@@ -1,9 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.persistenza;
-
-import it.unicam.cs.mpgc.rpg126365.applicazione.ArchivioPartite;
-import it.unicam.cs.mpgc.rpg126365.dominio.Archetipo;
-import it.unicam.cs.mpgc.rpg126365.dominio.Eroe;
-import it.unicam.cs.mpgc.rpg126365.dominio.Partita;
+package it.unicam.cs.mpgc.rpg126365;
 
 import java.io.IOException;
 import java.nio.file.Files;

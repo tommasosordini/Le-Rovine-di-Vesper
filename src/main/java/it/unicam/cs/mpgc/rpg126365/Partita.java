@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.dominio;
+package it.unicam.cs.mpgc.rpg126365;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.desktop;
+package it.unicam.cs.mpgc.rpg126365;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;

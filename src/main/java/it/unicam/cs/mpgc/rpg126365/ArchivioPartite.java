@@ -1,6 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.applicazione;
-
-import it.unicam.cs.mpgc.rpg126365.dominio.Partita;
+package it.unicam.cs.mpgc.rpg126365;
 
 import java.io.IOException;
 import java.util.Optional;

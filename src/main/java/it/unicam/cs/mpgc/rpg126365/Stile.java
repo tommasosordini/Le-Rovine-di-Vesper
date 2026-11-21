@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.desktop;
+package it.unicam.cs.mpgc.rpg126365;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;

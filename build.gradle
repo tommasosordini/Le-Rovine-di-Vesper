@@ -27,5 +27,5 @@ tasks.named('test') {
 }
 
 application {
-    mainClass = 'it.unicam.cs.mpgc.rpg126365.desktop.AvvioDesktop'
+    mainClass = 'it.unicam.cs.mpgc.rpg126365.AvvioDesktop'
 }

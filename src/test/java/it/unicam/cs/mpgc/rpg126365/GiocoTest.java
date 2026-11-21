@@ -1,10 +1,5 @@
-package it.unicam.cs.mpgc.rpg126365.applicazione;
+package it.unicam.cs.mpgc.rpg126365;
 
-import it.unicam.cs.mpgc.rpg126365.dominio.Archetipo;
-import it.unicam.cs.mpgc.rpg126365.dominio.Azione;
-import it.unicam.cs.mpgc.rpg126365.dominio.CatalogoCampagne;
-import it.unicam.cs.mpgc.rpg126365.dominio.Partita;
-import it.unicam.cs.mpgc.rpg126365.persistenza.ArchivioPartiteSuFile;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

@@ -1,13 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.applicazione;
-
-import it.unicam.cs.mpgc.rpg126365.dominio.Archetipo;
-import it.unicam.cs.mpgc.rpg126365.dominio.Azione;
-import it.unicam.cs.mpgc.rpg126365.dominio.Campagna;
-import it.unicam.cs.mpgc.rpg126365.dominio.EsitoTurno;
-import it.unicam.cs.mpgc.rpg126365.dominio.Fase;
-import it.unicam.cs.mpgc.rpg126365.dominio.Partita;
-import it.unicam.cs.mpgc.rpg126365.dominio.RegoleGioco;
-import it.unicam.cs.mpgc.rpg126365.dominio.Stanza;
+package it.unicam.cs.mpgc.rpg126365;
 
 import java.io.IOException;
 import java.util.List;

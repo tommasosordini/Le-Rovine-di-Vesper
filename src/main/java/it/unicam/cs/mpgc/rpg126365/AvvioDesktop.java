@@ -1,8 +1,4 @@
-package it.unicam.cs.mpgc.rpg126365.desktop;
-
-import it.unicam.cs.mpgc.rpg126365.applicazione.Gioco;
-import it.unicam.cs.mpgc.rpg126365.dominio.CatalogoCampagne;
-import it.unicam.cs.mpgc.rpg126365.persistenza.ArchivioPartiteSuFile;
+package it.unicam.cs.mpgc.rpg126365;
 
 import javax.swing.SwingUtilities;
 import java.nio.file.Path;
