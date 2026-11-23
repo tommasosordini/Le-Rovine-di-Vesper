@@ -2,14 +2,39 @@
 
 Gioco di ruolo a turni per desktop. Crea un Guerriero o un Mago e scegli tra due campagne illustrate, Le Rovine di Vesper e Il Faro delle Maree. Segui i combattimenti nel diario di battaglia e salva tra due stanze.
 
-Servono un JDK 17 e una connessione Internet per scaricare Gradle e le dipendenze dei test al primo build. Dalla cartella del progetto, su Linux e macOS:
+## Come eseguire il progetto
+
+### Prerequisiti
+
+- JDK 17
+- Connessione Internet al primo build per scaricare Gradle e le dipendenze dei test
+
+Il Gradle Wrapper è incluso nel repository.
+
+### Istruzioni
+
+Copia l'URL HTTPS del repository dal pulsante **Code** su GitHub e usalo al posto di `URL_DEL_REPOSITORY`.
+
+```text
+git clone https://github.com/tommasosordini/Le-Rovine-di-Vesper.git LeRovineDiVesper
+cd LeRovineDiVesper
+```
+
+### Build del progetto
 
 ```sh
 ./gradlew build
+```
+
+Il comando esegue anche i test JUnit.
+
+### Esecuzione
+
+```sh
 ./gradlew run
 ```
 
-Su Windows, da PowerShell:
+Da PowerShell su Windows, usa questi comandi.
 
 ```powershell
 .\gradlew.bat build
@@ -18,6 +43,9 @@ Su Windows, da PowerShell:
 
 Per aprirlo in IntelliJ IDEA, seleziona questa cartella con **File → Open** e imposta un JDK 17 per Gradle.
 
-Il comando `build` esegue anche i test JUnit.
+## 🤖 Uso di strumenti di AI
 
-**Uso dell'AI.** Codex è stato utilizzato per la progettazione, il codice, le verifiche e la documentazione. Le illustrazioni delle campagne sono state create con OpenAI ImageGen. La dichiarazione dettagliata è nella Wiki del repository.
+- **OpenAI Codex** ha contribuito al debugging e alla documentazione.
+- **OpenAI ImageGen** ha generato le due illustrazioni delle campagne.
+
+La dichiarazione dettagliata è nella pagina **Dichiarazione di uso dell'AI** della Wiki del repository.
